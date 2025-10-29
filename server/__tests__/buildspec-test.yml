@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "[test] installing deps"
+      - npm ci
+  build:
+    commands:
+      - echo "[test] running tests"
+      - npm test -- --ci || npm test
+
+reports:
+  jest_reports:
+    files:
+      - junit.xml
+    file-format: JUNITXML
+    base-directory: .
