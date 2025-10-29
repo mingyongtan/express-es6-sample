@@ -1,29 +1,13 @@
+# buildspec.yml
 version: 0.2
-
 phases:
   install:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo "[build] installing deps"
       - npm ci
   build:
     commands:
-      - echo "[build] run optional build step (ignore if none)"
-      - npm run build || echo "no build script, skipping"
-  post_build:
-    commands:
-      - echo "[build] packaging artifact for Elastic Beanstalk"
-      # make a clean bundle without dev junk; EB will run npm install on instance
-      - zip -rq app.zip . \
-        -x ".git/*" \
-        ".github/*" \
-        "node_modules/*" \
-        "coverage/*" \
-        "*.log" \
-        "app.zip"
-
+      - echo "Build complete"
 artifacts:
-  files:
-    - app.zip
-  discard-paths: yes
+  files: '**/*'
