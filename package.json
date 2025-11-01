@@ -50,5 +50,6 @@
     "clean": "rm -rf dist-server",
     "watch:dev": "nodemon",
     "test": "jest"
+    "start": "node server.js"
   }
 }
