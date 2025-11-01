@@ -1,4 +1,5 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
@@ -6,10 +7,17 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install
+      - npm install --save-dev @babel/cli @babel/core @babel/preset-env
+
   build:
     commands:
+      - echo "Transpiling ES6 to CommonJS..."
+      - npx babel server/app.js --out-file server/app-transpiled.js --presets @babel/preset-env
+      - cp server/app-transpiled.js server/app.js
+      - echo "Patching app.js to add app.listen(process.env.PORT || 3000)..."
+      - sed -i '$ a const PORT = process.env.PORT || 3000; app.listen(PORT, () => console.log("Server running on port " + PORT));' server/app.js
       - echo "Build complete"
-     
+
 artifacts:
   files:
     - '**/*'
