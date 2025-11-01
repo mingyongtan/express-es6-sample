@@ -5,14 +5,17 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo "Installing dependencies..."
+      - echo "Installing deps..."
       - npm install
 
   build:
     commands:
-      - echo "Patching server/app.js to use process.env.PORT (EB requires port 8081)..."
-      - sed -i 's/app\.listen([0-9]\+)/app.listen(process.env.PORT \|\| 3000)/g' server/app.js || echo "No hard-coded port found, skipping patch"
-      - echo "Build complete"
+      - echo "=== FIXING PORT & STARTUP FOR ELASTIC BEANSTALK ==="
+      # 1. Force app to listen on EB's port 8081
+      - sed -i 's/app\.listen *[0-9]*/app.listen(process.env.PORT || 3000)/g' server/app.js || true
+      # 2. Force package.json to start the right file
+      - sed -i 's|"start": *".*|"start": "node server/app.js"|g' package.json || true
+      - echo "=== FIXED ==="
 
 artifacts:
   files:
