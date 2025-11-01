@@ -1,44 +1,15 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo "Installing express..."
-      - npm install express
-
+      - echo "Installing dependencies..."
+      - npm install
   build:
     commands:
-      - echo "Creating minimal working server.js..."
-      - |
-        cat > server.js << 'EOF'
-        const express = require('express');
-        const path = require('path');
-        const app = express();
-
-        // Serve public folder
-        app.use(express.static('public'));
-
-        // Student ID route
-        app.get('/', (req, res) => {
-          res.send('My Student ID is 21920794. Welcome to Express');
-        });
-
-        // Fallback
-        app.get('*', (req, res) => {
-          res.sendFile(path.join(__dirname, 'public', 'index.html'));
-        });
-
-        // EB port
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, '0.0.0.0', () => {
-          console.log('Server LIVE on port ' + PORT);
-        });
-        EOF
-
-      - echo "server.js created"
-
+      - echo "Build complete"
+     
 artifacts:
   files:
     - '**/*'
