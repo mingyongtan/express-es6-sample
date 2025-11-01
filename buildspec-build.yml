@@ -10,8 +10,17 @@ phases:
 
   build:
     commands:
-      - echo "Patching port in server/app.js for EB (8081)..."
-      - sed -i 's/app\.listen([0-9]\+)/app.listen(process.env.PORT || 3000)/g' server/app.js || echo "No hard-coded port found"
+      - echo "Forcing server/app.js to use process.env.PORT (EB 8081)..."
+      - |
+        if grep -q "app\.listen" server/app.js; then
+          sed -i 's/app\.listen.*/app.listen(process.env.PORT || 3000);/g' server/app.js
+          echo "Patched existing app.listen"
+        else
+          echo "app.listen not found - appending to end of file"
+          echo "" >> server/app.js
+          echo "const PORT = process.env.PORT || 3000;" >> server/app.js
+          echo "app.listen(PORT, () => console.log('Server running on port ' + PORT));" >> server/app.js
+        fi
       - echo "Build complete"
 
 artifacts:
