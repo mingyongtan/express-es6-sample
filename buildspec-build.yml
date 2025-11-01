@@ -7,15 +7,10 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install
-      - npm install -g @babel/cli @babel/core @babel/preset-env
 
   build:
     commands:
-      - echo "Transpiling ES6 to ES5..."
-      - npx babel server/app.js --out-file server/app.js --presets @babel/preset-env
-      - npx babel bin/www --out-file bin/www --presets @babel/preset-env
-      - npx babel routes --out-dir routes --presets @babel/preset-env --copy-files || echo "No routes folder"
-      - npx babel views --out-dir views --presets @babel/preset-env --copy-files || echo "No views folder"
+      - echo "Build complete"
 
 artifacts:
   files:
