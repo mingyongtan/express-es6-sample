@@ -1,18 +1,20 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
-      nodejs: 18 # ES6 compatible
+      nodejs: 18
     commands:
-      - npm install -g @babel/core @babel/cli # For ES6 transpile
-  pre_build:
-    commands:
+      - echo "Installing dependencies..."
       - npm install
+
   build:
     commands:
-      - echo "Building ES6 app..."
-      - npm run build # Transpile to dist-server
+      - echo "Building application..."
+      - npm run build
+
 artifacts:
   files:
-    - "**/*"
-  base-directory: dist-server # EB needs transpiled code
+    - '**/*'
+  discard-paths: yes
+  base-directory: .
