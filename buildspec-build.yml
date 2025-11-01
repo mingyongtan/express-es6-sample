@@ -10,6 +10,8 @@ phases:
 
   build:
     commands:
+      - echo "Patching server/app.js to use process.env.PORT (EB requires port 8081)..."
+      - sed -i 's/app\.listen([0-9]\+)/app.listen(process.env.PORT \|\| 3000)/g' server/app.js || echo "No hard-coded port found, skipping patch"
       - echo "Build complete"
 
 artifacts:
