@@ -12,3 +12,7 @@ phases:
     commands:
       - echo "Running tests..."
       - npm test || echo "No tests found - continuing pipeline"
+  artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes
