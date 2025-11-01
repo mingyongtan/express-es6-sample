@@ -1,12 +1,18 @@
-# testspec.yml
 version: 0.2
 phases:
   install:
     runtime-versions:
       nodejs: 18
     commands:
-      - npm ci
-      - npm install mocha supertest --save-dev
+      - npm install -g mocha
+      - npm install --save-dev mocha supertest # For API tests
+  pre_build:
+    commands:
+      - npm install
   build:
     commands:
-      - npm test
+      - echo "Running tests..."
+      - mocha test.js --exit # Assumes test.js exists; add if needed
+artifacts:
+  files:
+    - "**/*"

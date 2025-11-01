@@ -1,13 +1,18 @@
-# buildspec.yml
 version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 18 # ES6 compatible
     commands:
-      - npm ci
+      - npm install -g @babel/core @babel/cli # For ES6 transpile
+  pre_build:
+    commands:
+      - npm install
   build:
     commands:
-      - echo "Build complete"
+      - echo "Building ES6 app..."
+      - npm run build # Transpile to dist-server
 artifacts:
-  files: '**/*'
+  files:
+    - "**/*"
+  base-directory: dist-server # EB needs transpiled code
