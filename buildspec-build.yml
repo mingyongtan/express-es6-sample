@@ -7,22 +7,15 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install
-      - npm install -g babel-cli @babel/core @babel/preset-env @babel/register
+      - npm install -g @babel/cli @babel/core @babel/preset-env
 
   build:
     commands:
       - echo "Transpiling ES6 to ES5..."
-      - npx babel app.js --out-file app-transpiled.js
-      - npx babel bin/www --out-file bin/www-transpiled
-      - npx babel routes --out-dir routes-transpiled --copy-files
-      - npx babel views --out-dir views-transpiled --copy-files
-
-  post_build:
-    commands:
-      - echo "Replacing files..."
-      - cp app-transpiled.js app.js
-      - cp bin/www-transpiled bin/www
-      - rm -rf routes-transpiled views-transpiled
+      - npx babel server/app.js --out-file server/app.js --presets @babel/preset-env
+      - npx babel bin/www --out-file bin/www --presets @babel/preset-env
+      - npx babel routes --out-dir routes --presets @babel/preset-env --copy-files || echo "No routes folder"
+      - npx babel views --out-dir views --presets @babel/preset-env --copy-files || echo "No views folder"
 
 artifacts:
   files:
